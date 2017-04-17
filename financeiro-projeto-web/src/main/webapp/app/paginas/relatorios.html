@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" lang="pt-br">
+        <title>Sistema de Finanças</title>
+        
+        <!-- Dependências css -->
+        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
+        <link rel="stylesheet" type="text/css" href="../css/estilos.css">
+        
+        <!-- Dependências JavaScript-->
+        <script src="../../bower_components/angular/angular.js" ></script>
+        <script src="../../bower_components/angular-growl-v2/build/angular-growl.js"></script>
+        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../../bower_components/angular-animate/angular-animate.js"></script>
+  		<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../js/modulos/relatorios.js"></script>
+        <script src="../js/controllers/relatorios-controller.js"></script>
+
+    </head>
+	<body ng-app ="relatorios" ng-controller="relatoriosController">
+		<header ng-include="'../templates/barra_navegacao.html'"></header>
+		<div growl limit-messages="1"></div>
+		
+		<ul class="nav nav-tabs">
+  			<li class="active"><a href="#titulosReceber" data-toggle="tab">Títulos a receber</a></li>
+  			<li ><a href="#titulosPagar" data-toggle="tab">Títulos a pagar</a></li>
+  			<li ><a href="#pessoas" data-toggle="tab">Pessoas</a></li>
+		</ul>
+		
+		<div class="tab-content clearfix">
+			<div class="tab-pane active" id="titulosReceber">
+				<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Relatório de contas a receber</div>
+						  <div class="panel-body">
+							  <form  id="fomulario1" class="form-group">
+								  <label for="listagem">Listar:</label><br>
+									<select class="form-control" id="listagemReceber" ng-model="filtroContasReceber.listagem">
+										<option>Todas</option>
+										<option>Somente abertas</option>
+										<option>Somente pagas</option>
+									</select><br>
+									<label for="ordenacao">Ordenar por:</label><br>
+			 						<select class="form-control" id="ordenacaoReceber" ng-model="filtroContasReceber.ordenacao">
+										<option>Data de criação</option>
+										<option>Data de vencimento</option>
+										<option>Valor do título</option>
+									</select>
+									<div id="botoes-formulario">
+										<input id="botao-salvar" class="btn btn-success" type="button" ng-click="gerarRelatorioContasReceber(filtroContasReceber)" value="Gerar relatório"></input>
+										<input id="botao-salvar" class="btn btn-primary" type="button" ng-click="listarContasReceber(filtroContasReceber)" value="Consultar"></input><br><br><br> 
+									</div>
+									 
+			 					<form>
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th class="col-xs-2">Número do título</th>
+												<th class="col-xs-2">Nome da pessoa </th>
+												<th class="col-xs-2">Data de criação</th>
+												<th class="col-xs-2">Data de vencimento</th>
+												<th class="col-xs-1">Valor do titulo(R$)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in dadosRelatorio">
+												<td class="col-xs-2">
+													<span ng-bind="registro.numeroTitulo"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dadosPessoa.nomePessoa"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dataCriacaoTitulo | date:'dd/MM/yyyy'"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dataVencimentoTitulo | date:'dd/MM/yyyy'"></span>
+												</td>
+												<td class="col-xs-1">
+													<span ng-bind="registro.valorTitulo"></span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+			  				</div>
+						</div>
+					</div>
+			</div>
+			
+			<div class="tab-pane" id="titulosPagar">
+				<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Relatório de contas a pagar</div>
+			  			<div class="panel-body">
+			  				<form id="fomulario2" class="form-group">
+								  <label for="listagemPagar">Listar:</label><br>
+									<select class="form-control" id="listagemPagar" ng-model="filtroContasPagar.listagem">
+										<option>Todas</option>
+										<option>Somente abertas</option>
+										<option>Somente pagas</option>
+									</select><br>
+									<label for="ordenacaoPagar">Ordenar por:</label><br>
+			 						<select class="form-control" id="ordenacaoPagar" ng-model="filtroContasPagar.ordenacao">
+										<option>Data de criação</option>
+										<option>Data de vencimento</option>
+										<option>Valor do título</option>
+									</select>
+									<div id="botoes-formulario">
+										<input id="botao-salvar" class="btn btn-success" type="button" ng-click="gerarRelatorioContasPagar(filtroContasPagar)" value="Gerar relatório"></input>
+										<input id="botao-salvar" class="btn btn-primary" type="button" ng-click="listarContasPagar(filtroContasPagar)" value="Consultar"></input><br><br><br> 
+									</div>
+									 
+			 					<form>
+ 							<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th class="col-xs-2">Número do título</th>
+												<th class="col-xs-2">Nome da pessoa </th>
+												<th class="col-xs-2">Data de criação</th>
+												<th class="col-xs-2">Data de vencimento</th>
+												<th class="col-xs-1">Valor do titulo(R$)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in dadosRelatorio">
+												<td class="col-xs-2">
+													<span ng-bind="registro.numeroTitulo"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dadosPessoa.nomePessoa"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dataCriacaoTitulo | date:'dd/MM/yyyy'"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dataVencimentoTitulo | date:'dd/MM/yyyy'"></span>
+												</td>
+												<td class="col-xs-1">
+													<span ng-bind="registro.valorTitulo"></span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+			  			</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="tab-pane" id="pessoas">
+				<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Relatório de pessoas cadastradas</div>
+			  			<div class="panel-body">
+			  				<form id="fomulario3" class="form-group">
+								  <label for="listagemPessoas">Listar pessoas por:</label><br>
+									<select class="form-control" id="listagemPessoas" ng-model="filtroPessoa.listagem" ng-selected="Todas">
+										<option>Todas</option>
+										<option>Possuir títulos cadastrados</option>
+										<option>Não possuir títulos cadastrados</option>
+									</select>
+									<div id="botoes-formulario">
+										<input id="botao-salvar" class="btn btn-success" type="button" ng-click="gerarRelatorioPessoas(filtroPessoa)" value="Gerar relatório"></input>
+										<input id="botao-salvar" class="btn btn-primary" type="button" ng-click="listarPessoas(filtroPessoa)" value="Consultar"></input><br><br><br> 
+									</div>
+									 
+			 					<form>
+ 							<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th class="col-xs-2">Nome </th>
+												<th class="col-xs-2">CPF/CNPJ </th>
+												<th class="col-xs-2">Data de Nascimento</th>
+												<th class="col-xs-2">Cidade</th>
+												<th class="col-xs-1">Estado(UF)</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in dadosRelatorio">
+												<td class="col-xs-2">
+													<span ng-bind="registro.nomePessoa"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.cpfCnpjPessoa"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.dataNascimentoPessoa | date:'dd/MM/yyyy'"></span>
+												</td>
+												<td class="col-xs-2">
+													<span ng-bind="registro.cidadePessoa"></span>
+												</td>
+												<td class="col-xs-1">
+													<span ng-bind="registro.estadoPessoa"></span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+			  			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+
+/*//Barra de navegação  */
+.navbar{
+	background-color: #2047B2;
+}
+
+.navbar-header a{
+	color: #FFFFFF;
+	font-size: 20px;
+}
+
+.nav.navbar-nav li a{
+	color: #FFFFFF;
+	font-size: 20px;
+}
+
+.nav.navbar-nav li a:focus{
+	background-color: #1B3A7A;
+}
+
+.nav.navbar-nav li a:hover{
+	background-color: #1B3A7A;
+}
+
+.nav .open> a, .nav .open> a:focus, .nav .open>a:hover {
+    background-color: #1B3A7A;
+}
+
+.navbar-nav> li>.dropdown-menu li a{
+    color: #000000;
+    font-size: 14px;
+}
+
+.navbar-nav> li>.dropdown-menu li a:hover{
+    color: #FFFFFF;
+}
+
+/*//Tela Home  */
+#painel-home{
+	margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+}
+
+#painel-home-h1{
+	text-align: center;
+}
+
+/*//Tela Conta a pagar  */
+.panel-default>.panel-heading {
+	background-color: #2047B2;
+	color: #FFFFFF;
+}
+
+/*//Tela Contas  */
+#botoes-formulario{
+	margin-top: 2%;
+}
+
+#botao-cancelar{
+	margin-right:12px;
+	float:right;
+}
+
+#botao-salvar{
+	margin-left: 1%;
+	float:right;
+}
+
+.tab-content.clearfix{
+	margin-top: 3%;
+	
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" lang="pt-br">
+        <title>Sistema de Finanças</title>
+        
+        <!-- Dependências css -->
+        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
+        <link rel="stylesheet" type="text/css" href="../css/estilos.css">
+        
+        <!-- Dependências JavaScript-->
+        <script src="../../bower_components/angular/angular.js" ></script>
+        <script src="../../bower_components/angular-growl-v2/build/angular-growl.js"></script>
+        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../../bower_components/angular-animate/angular-animate.js"></script>
+  		<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../js/modulos/contas-pagar.js"></script>
+        <script src="../js/controllers/contas-pagar-controller.js"></script>
+
+    </head>
+	<body ng-app ="contasPagar" ng-controller="contasPagarController">
+		<header ng-include="'../templates/barra_navegacao.html'"></header>
+		<div growl limit-messages="1"></div>
+		
+		<ul class="nav nav-tabs">
+  			<li class="active"><a href="#cadastro" data-toggle="tab">Cadastro</a></li>
+  			<li ><a href="#consulta" data-toggle="tab">Consulta</a></li>
+  			<li><a href="#exclusao" data-toggle="tab">Exclusão</a></li>
+		</ul>
+		
+		<div class="tab-content clearfix">
+			<div class="tab-pane active" id="cadastro">
+				<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Cadastro de contas a pagar</div>
+			  			<div class="panel-body">
+			  				<form name="formulario" ng-submit="cadastrarContaPagar(cadastro)">
+							  <div class="form-group">
+							    <label for="dataCriacao">Data de criação: *</label>
+							    <input type="date" class="form-control" ng-model="cadastro.dataCriacao" id="dataCriacao" required> <br>
+							    
+							    <label for="dataVencimento">Data de vencimento: *</label>
+							    <input type="date" class="form-control" ng-model="cadastro.dataVencimento" id="dataVencimento" required> <br>
+							    
+							    <label for="nomePessoa">Nome pessoa (física ou juridica): *</label>
+							    <input type="text" class="form-control" ng-model="cadastro.nomePessoa" id="nomePessoa" placeholder="Nome pessoa" required> <br>
+							    
+								<label for="cpf">CPF(pessoa física) / CNPJ(pessoa jurídica): *</label>
+							    <input type="text" class="form-control" ng-model="cadastro.cpfCnpj" id="cpf" placeholder="000.000.000-00 / 00.000.000/0000-00" required> <br>
+							    
+							    <label for="valorTitulo">Valor do título (R$): *</label>
+							    <input type="number"step="0.01" class="form-control" ng-model="cadastro.valorTitulo" id="valorTitulo" placeholder="0.00" required> <br>
+							    
+							    <label for="valorJuros">Valor de juros (R$):</label>
+							    <input type="number" step="0.01" class="form-control" ng-model="cadastro.valorJuros" id="valorJuros" placeholder="0.00"> <br>
+							    
+							    <label for="valorDesconto">Valor de desconto:</label>
+							    <input type="number" step="0.01" class="form-control" ng-model="cadastro.valorDesconto" id="valorDesconto" placeholder="0.00" > <br>	    
+								* Campos de preenchimento obrigatório	 	
+
+							  	<div id="botoes-formulario">
+									<input id="botao-salvar" class="btn btn-success" type="submit" value="Salvar"></input> 
+									<input id="botao-cancelar" class="btn btn-default" type="button" value="Cancelar" ng-click="cancelar()"></input>
+								</div>
+							  </div>
+							</form>
+			  			</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="tab-pane" id="consulta">
+          		<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Lista de contas a pagar cadastradas</div>
+			  			<div class="panel-body">
+			  				<label for="filtro" >Filtrar por:</label><br>
+			  				<input class="form-control" type=text placeholder="Dados de contas a pagar" name="filtro" ng-model="filtrar"></input><br>
+ 							<div class="table-responsive">
+				 				<table class="table">
+				 					<thead>
+				 						<tr>
+				 							<th class="col-xs-2">Número do título</th>
+				 							<th class="col-xs-3">Nome da pessoa </th>
+				 							<th class="col-xs-2">Cadastrada há</th>
+				 							<th class="col-xs-2">Prazo de vencimento</th>
+				 							<th class="col-xs-1">Valor (R$)</th>
+				 						</tr>
+				 					</thead>
+				 					<tbody>
+				 						  <tr ng-repeat="titulo in titulos | orderBy:'numeroTitulo' | filter: filtrar">
+					 						
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.numeroTitulo"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.dadosPessoa.nomePessoa"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="intervaloDataCriacao(titulo.dataCriacaoTitulo)"></span>
+					 						</td>
+					 						<td class="col-xs-3">
+					 							<span ng-bind="intervaloDataVencimento(titulo.dataVencimentoTitulo, titulo.valorPagoTitulo)"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.valorTitulo"></span>
+					 						</td>
+				 						</tr>
+				 					</tbody>
+				 				</table>
+ 							</div>
+			  			</div>
+					</div>
+				</div>
+			</div>
+			
+			
+        	<div class="tab-pane" id="exclusao">
+          		<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Exclusão de contas a pagar</div>
+			  			<div class="panel-body">
+			  				<form ng-submit="excluirContaPagar(cadastro)">
+							  <div class="form-group">
+							    <label for="numeroTitulo">Número do título:</label>
+							    <input type="number" ng-model="cadastro.numeroTitulo" class="form-control" id="numeroTitulo" required>
+							  	<div id="botoes-formulario">
+									<input id="botao-salvar" class="btn btn-success" type="submit" value="Excluir"></input>
+								</div>
+							  </div>
+							</form>
+			  			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 
+			<div id="gerenciamento" >
+ 			<div growl limit-messages="1"></div>
+ 			
+ 			<h1>Gerenciamento de cadastro de usuários</h1>
+ 			<div class="panel panel-primary" id="cadastro-usuario">
+ 			<div class="panel-heading painel">Usuários cadastrados</div>
+ 			<div class="panel-body">
+ 				<label for="filtro" >Filtrar por:</label><br>
+ 				<div class="row">
+ 					<div class="col-xs-11">
+ 						<input class="form-control" type=text placeholder="Dados do usuário" name="filtro" ng-model="procurar"></input>
+ 					</div>
+ 					<div class="col-xs-1">
+ 						<button class="btn btn-success" type="button" ng-click="novoCadastro()" data-tooltip="true" data-placement="top" title="Novo cadastro">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+ 					</div>
+ 				</div>
+ 				<br>
+ 				<div class="table-responsive">
+ 				<table class="table">
+ 					<thead>
+ 						<tr>
+ 							<th class="col-xs-3">Nome</th>
+ 							<th class="col-xs-1">Login</th>
+ 							<th class="col-xs-2">E-mail</th>
+ 							<th class="col-xs-1">Ativo</th>
+ 							<th class="col-xs-1"></th>
+ 						</tr>
+ 					</thead>
+ 					<tbody>
+ 						<tr ng-repeat="usuario in usuarios | orderBy:'nomeUsuario' | filter: procurar">
+	 						<td class="col-xs-3">
+	 							{{usuario.nomeUsuario}}
+	 						</td>
+	 						<td class="col-xs-1">
+	 							{{usuario.login}}
+	 						</td>
+	 						<td class="col-xs-2">
+	 							{{usuario.email}}
+	 						</td>
+	 						<td class="col-xs-1">
+	 							{{formatarAtivo(usuario.ativo)}}
+	 						</td>
+	 						<td class="col-xs-1">
+	 							<button class="btn btn-danger" type="button" value="Apagar" data-toggle="modal" data-target="#exclusao" ng-click="abrirModal(usuario)">
+	 								<span class="glyphicon glyphicon-trash" aria-hidden="true" data-tooltip="true" data-placement="top" title="Excluir"></span>
+	 							</button>
+	 							<button class="btn btn-warning" type="button" ng-click="editar(usuario)">
+	 								<span class="glyphicon glyphicon-edit" aria-hidden="true" data-tooltip="true" data-placement="top" title="Editar"></span>
+	 							</button>
+	 						</td>
+ 						</tr>
+ 					</tbody>
+ 				</table>
+ 				</div>
+ 				
+ 				<div class="modal fade" id="exclusao" role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4>Confirmação de exclusão</h4>
+							</div>
+							<div class="modal-body">
+								<p>
+									<b>Dados do usuário selecionado:</b>
+								</p>
+								<p>
+									<b>Nome:</b> {{usuarioSelecionado.nomeUsuario}}
+								</p>
+								<p>
+									<b>Login:</b> {{usuarioSelecionado.login}}
+								</p>
+								<p>
+									<b>E-mail:</b> {{usuarioSelecionado.email}}
+								</p>
+								<p>
+									<b>Ativo:</b> {{formatarAtivo(usuarioSelecionado.ativo)}}
+								</p>
+								<br> Você realmente deseja excluir este usuário?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary"
+									ng-click="apagar()" data-dismiss="modal">Excluir</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Cancelar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+ 			</div>
+ 			
+ 		</div>
+			
+		
+		-->
+		
+	</body>
+</html>
+

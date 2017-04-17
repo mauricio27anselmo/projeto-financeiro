@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="0.0.2" author="mauricio.matos">
+         <preConditions onFail="MARK_RAN">
+         	<not>
+         		<tableExists tableName="titulo" schemaName="public"/>
+         	</not> 
+         </preConditions>
+         
+         <createTable tableName="titulo" >
+         	<column name="tit_numero" type="bigint" autoIncrement="true" incrementBy="1" startWith="1">
+         		<constraints primaryKey="true" nullable="false"/>
+         	</column>
+         	<column name="tit_data_criacao" type="date">
+         		<constraints nullable="false"/>
+         	</column>
+         	<column name="tit_data_vencimento" type="date">
+         		<constraints nullable="false"/>
+         	</column>
+         	<column name="tit_data_pagamento"  type="date">
+         	</column>
+         	<column name="tit_valor" type="decimal(10,2)">
+         		<constraints nullable="false"/>
+         	</column>
+         	<column name="tit_valor_juros" type="decimal(10,2)" >
+         		<constraints nullable="false" />
+         	</column>
+         	<column name="tit_valor_juros_calculado"  type="decimal(10,2)">
+         	</column>
+         	<column name="tit_valor_desconto"  type="decimal(10,2)">
+         	</column>
+         	<column name="tit_valor_pago"  type="decimal(10,2)">
+         	</column>
+         	<column name="tit_tipo_conta"  type="varchar(15)">
+         		<constraints nullable="false"/>
+         	</column>
+         	<column name="tit_cpf_cnpj" type="varchar(18)">
+         		<constraints nullable="false" foreignKeyName="tit_cpf_cnpj" referencedColumnNames="pes_cpf_cnpj" referencedTableName="pessoa"/>
+         	</column>
+         </createTable>
+         
+       </changeSet>
+</databaseChangeLog>

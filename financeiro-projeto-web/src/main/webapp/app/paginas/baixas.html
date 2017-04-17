@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" lang="pt-br">
+        <title>Sistema de Finanças</title>
+        
+        <!-- Dependências css -->
+        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
+        <link rel="stylesheet" type="text/css" href="../css/estilos.css">
+        
+        <!-- Dependências JavaScript-->
+        <script src="../../bower_components/angular/angular.js" ></script>
+        <script src="../../bower_components/angular-growl-v2/build/angular-growl.js"></script>
+        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../../bower_components/angular-animate/angular-animate.js"></script>
+  		<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../js/modulos/baixas.js"></script>
+        <script src="../js/controllers/baixas-controller.js"></script>
+
+    </head>
+	<body ng-app ="baixas" ng-controller="baixasController">
+		<header ng-include="'../templates/barra_navegacao.html'"></header>
+		<div growl limit-messages="1"></div>
+		
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">Dados de registro de baixa</div>
+					<div class="panel-body">
+						<form ng-submit="registrarBaixa(baixas)">
+							<div class="form-group">
+							    <label for="dataCriacao">Data de criação:</label>
+							    <input type="date" class="form-control" ng-model="baixas.dataCriacaoTitulo" id="dataCriacao" disabled> <br>
+							    
+							    <label for="dataVencimento">Data de vencimento:</label>
+							    <input type="date" class="form-control" ng-model="baixas.dataVencimentoTitulo" id="dataVencimento" disabled> <br>
+							    
+							    <label for="numeroTitulo">Código do Titulo:</label>
+							    <input type="text" class="form-control" ng-model="baixas.numeroTitulo" id="numeroTitulo" placeholder="0.00" disabled> <br>
+							    
+							    <label for="nomePessoa">Nome pessoa(física ou jurídica):</label>
+							    <input type="text" class="form-control" ng-model="baixas.dadosPessoa.nomePessoa" id="cpfCnpjPessoa" placeholder="000.000.000-00" disabled> <br>
+							    
+							    <label for="cpfCnpjPessoa">CPF/CNPJ:</label>
+							    <input type="text" class="form-control" ng-model="baixas.dadosPessoa.cpfCnpjPessoa" id="cpfCnpjPessoa" placeholder="000.000.000-00" disabled> <br>
+							    
+							    <label for="valorTitulo">Valor do título (R$):</label>
+							    <input type="text" class="form-control" ng-model="baixas.valorTitulo" id="valorTitulo" placeholder="0.00" disabled> <br>
+							    
+							    <label for="valorJuros">Valor de juros (R$): *</label>
+							    <input type="text" class="form-control" ng-model="baixas.valorJurosTitulo" id="valorJuros" placeholder="0.00" disabled> <br>
+							    
+							    <label for="valorPago">Valor pago (R$): *</label>
+							    <input type="number" step="0.01" class="form-control" ng-model="baixas.valorPagoTitulo" id="valorPago" placeholder="0.00" required> <br>
+							    
+							    <label for="porcentagemJuros">Porcentagem de Juros(%):</label>
+							    <input type="number" min="0" max="100" class="form-control" ng-change="calcularValorJuros()" ng-model="taxas.porcentagemJuros" id="porcentagemJuros" placeholder="10"> <br>
+							    
+							    <label for="valorJurosSugerido">Valor de juros sugerido (R$):</label>
+							    <input type="number" step="0.01" class="form-control" ng-value="taxas.valorJurosSugeridoTitulo" id="valorJurosSugerido" placeholder="0.00" disabled> <br>
+							    
+							    <label for="valorJurosCalculado">Valor de juros calculado (R$):</label>
+							    <input type="number" step="0.01" class="form-control" ng-value="baixas.valorJurosCalculadoTitulo" ng-model="baixas.valorJurosCalculadoTitulo" id="valorJurosCalculado" placeholder="0.00" required> <br>
+							    
+							    <label for="dataCriacao">Data de pagamento: *</label>
+							    <input type="date" class="form-control" ng-change="calcularValorJuros()" ng-model="baixas.dataPagamentoTitulo" id="dataCriacao"> <br>
+
+								<label for="porcentagemJuros">Porcentagem de Desconto(%):</label>
+							    <input type="number" min="0" max="100" class="form-control" ng-change="calcularValorDesconto()" ng-model="taxas.porcentagemDesconto" id="porcentagemJuros" placeholder="10"> <br>
+							    
+								<label for="valorDesconto">Valor com desconto (R$):</label>
+							    <input type="number" step="0.01" class="form-control" ng-value="baixas.valorDescontoTitulo" ng-model="baixas.valorDescontoTitulo" id="valorDesconto" placeholder="0.00"> <br>	    
+								* Campos de preenchimento obrigatório
+								
+							  	<div id="botoes-formulario">
+									<input id="botao-salvar" class="btn btn-success" type="submit" value="Gravar"></input> 
+								</div>
+							 </div>
+						</form>
+			  		</div>
+				</div>
+			</div>
+	</body>
+</html>
+

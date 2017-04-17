@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" lang="pt-br">
+        <title>Sistema de Finanças</title>
+        
+        <!-- Dependências css -->
+        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
+        <link rel="stylesheet" type="text/css" href="../css/estilos.css">
+        
+        <!-- Dependências JavaScript-->
+        <script src="../../bower_components/angular/angular.js" ></script>
+        <script src="../../bower_components/angular-growl-v2/build/angular-growl.js"></script>
+        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../../bower_components/angular-animate/angular-animate.js"></script>
+  		<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../js/modulos/contas-receber.js"></script>
+        <script src="../js/controllers/contas-receber-controller.js"></script>
+
+    </head>
+	<body ng-app ="contasReceber" ng-controller="contasReceberController">
+		<header ng-include="'../templates/barra_navegacao.html'"></header>
+		<div growl limit-messages="1"></div>
+		
+		<ul class="nav nav-tabs">
+  			<li class="active"><a href="#cadastro" data-toggle="tab">Cadastro</a></li>
+  			<li ><a href="#consulta" data-toggle="tab">Consulta</a></li>
+  			<li><a href="#exclusao" data-toggle="tab">Exclusão</a></li>
+		</ul>
+		
+		<div class="tab-content clearfix">
+			<div class="tab-pane active" id="cadastro">
+				<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Cadastro de contas a receber</div>
+			  			<div class="panel-body">
+			  				<form name="formulario" ng-submit="cadastrarContaPagar(cadastro)">
+							  <div class="form-group">
+							    <label for="dataCriacao">Data de criação: *</label>
+							    <input type="date" class="form-control" ng-model="cadastro.dataCriacao" id="dataCriacao" required> <br>
+							    
+							    <label for="dataVencimento">Data de vencimento: *</label>
+							    <input type="date" class="form-control" ng-model="cadastro.dataVencimento" id="dataVencimento" required> <br>
+							    
+							    <label for="nomePessoa">Nome pessoa (física ou juridica): *</label>
+							    <input type="text" class="form-control" ng-model="cadastro.nomePessoa" id="nomePessoa" placeholder="Nome pessoa" required> <br>
+							    
+								<label for="cpf">CPF(pessoa física) / CNPJ(pessoa jurídica): *</label>
+							    <input type="text" class="form-control" ng-model="cadastro.cpfCnpj" id="cpf" placeholder="000.000.000-00 / 00.000.000/0000-00" required> <br>
+							    
+							    <label for="valorTitulo">Valor do título (R$): *</label>
+							    <input type="number"step="0.01" class="form-control" ng-model="cadastro.valorTitulo" id="valorTitulo" placeholder="0.00" required> <br>
+							    
+							    <label for="valorJuros">Valor de juros (R$):</label>
+							    <input type="number" step="0.01" class="form-control" ng-model="cadastro.valorJuros" id="valorJuros" placeholder="0.00"> <br>
+							    
+							    <label for="valorDesconto">Valor de desconto:</label>
+							    <input type="number" step="0.01" class="form-control" ng-model="cadastro.valorDesconto" id="valorDesconto" placeholder="0.00" > <br>	    
+								* Campos de preenchimento obrigatório	 	
+
+							  	<div id="botoes-formulario">
+									<input id="botao-salvar" class="btn btn-success" type="submit" value="Salvar"></input> 
+									<input id="botao-cancelar" class="btn btn-default" type="button" value="Cancelar" ng-click="cancelar()"></input>
+								</div>
+							  </div>
+							</form>
+			  			</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="tab-pane" id="consulta">
+          		<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Lista de contas a receber cadastradas</div>
+			  			<div class="panel-body">
+			  				<label for="filtro" >Filtrar por:</label><br>
+			  				<input class="form-control" type=text placeholder="Dados de contas a receber" name="filtro" ng-model="filtrar"></input><br>
+ 							<div class="table-responsive">
+				 				<table class="table">
+				 					<thead>
+				 						<tr>
+				 							<th class="col-xs-2">Número do título</th>
+				 							<th class="col-xs-3">Nome da pessoa </th>
+				 							<th class="col-xs-2">Cadastrada há</th>
+				 							<th class="col-xs-2">Prazo de vencimento</th>
+				 							<th class="col-xs-1">Valor (R$)</th>
+				 						</tr>
+				 					</thead>
+				 					<tbody>
+				 						  <tr ng-repeat="titulo in titulos | orderBy:'numeroTitulo' | filter: filtrar">
+					 						
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.numeroTitulo"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.dadosPessoa.nomePessoa"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="intervaloDataCriacao(titulo.dataCriacaoTitulo)"></span>
+					 						</td>
+					 						<td class="col-xs-3">
+					 							<span ng-bind="intervaloDataVencimento(titulo.dataVencimentoTitulo, titulo.valorPagoTitulo)"></span>
+					 						</td>
+					 						<td class="col-xs-2">
+					 							<span ng-bind="titulo.valorTitulo"></span>
+					 						</td>
+				 						</tr>
+				 					</tbody>
+				 				</table>
+ 							</div>
+			  			</div>
+					</div>
+				</div>
+			</div>
+			
+			
+        	<div class="tab-pane" id="exclusao">
+          		<div class="container">
+					<div class="panel panel-default">
+						<div class="panel-heading">Exclusão de contas a receber</div>
+			  			<div class="panel-body">
+			  				<form ng-submit="excluirContaReceber(cadastro)">
+							  <div class="form-group">
+							    <label for="numeroTitulo">Número do título:</label>
+							    <input type="number" ng-model="cadastro.numeroTitulo" class="form-control" id="numeroTitulo" required>
+							  	<div id="botoes-formulario">
+									<input id="botao-salvar" class="btn btn-success" type="submit" value="Excluir"></input>
+								</div>
+							  </div>
+							</form>
+			  			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+

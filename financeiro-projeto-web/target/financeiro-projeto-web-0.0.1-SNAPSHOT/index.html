@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" lang="pt-br">
+        <title>Sistema de Finanças</title>
+        
+        <!-- Dependências css -->
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="app/css/estilos.css">
+        
+        <!-- Dependências JavaScript-->
+        <script src="bower_components/angular/angular.js" ></script>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="app/js/modulos/home.js"></script>
+        <script src="app/js/controllers/home-controller.js"></script>
+
+    </head>
+	<body ng-app ="home" ng-controller="homeController">
+		<header ng-include="'app/templates/barra_navegacao_home.html'"></header>
+		<div class="panel panel-default" id="painel-home">
+  			<div class="panel-body">
+  				<h1 id="painel-home-h1">Sistema de Finanças</h1><br>
+  				<p>Seja bem vindo, ao <b>Sistema de Finanças!</b></p>
+  				<p>Selecione uma das opções da barra de navegação para ter acesso aos
+  				recursos oferecidos pelo sistema.</p>
+  			</div>
+		</div>
+	</body>
+</html>

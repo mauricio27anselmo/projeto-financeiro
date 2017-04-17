@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="0.0.4" author="mauricio.matos">
+         <preConditions onFail="MARK_RAN">
+         	<tableExists tableName="titulo" schemaName="public"/>
+         	<tableIsEmpty tableName="titulo" schemaName="public"/>
+         </preConditions>
+         
+         <insert tableName="titulo">
+         	<column name="tit_cpf_cnpj" value="123.456.789-00">
+         	</column>
+         	<column name="tit_data_criacao" valueDate="2016-08-28">
+         	</column>
+         	<column name="tit_data_vencimento" valueDate="2017-06-15">
+         	</column>
+         	<column name="tit_valor" valueNumeric="185.88">
+         	</column>
+         	<column name="tit_valor_juros" valueNumeric="200.50">
+         	</column>
+         	<column name="tit_tipo_conta" value="CONTA_PAGAR">
+         	</column>
+         </insert>
+         
+         <insert tableName="titulo">
+         	<column name="tit_cpf_cnpj" value="987.654.321-00">
+         	</column>
+         	<column name="tit_data_criacao" valueDate="2016-12-23">
+         	</column>
+         	<column name="tit_data_vencimento" valueDate="2017-05-12">
+         	</column>
+         	<column name="tit_valor" valueNumeric="157.88">
+         	</column>
+         	<column name="tit_valor_juros" valueNumeric="215.50">
+         	</column>
+         	<column name="tit_tipo_conta" value="CONTA_RECEBER">
+         	</column>
+         </insert>
+    </changeSet>
+</databaseChangeLog>

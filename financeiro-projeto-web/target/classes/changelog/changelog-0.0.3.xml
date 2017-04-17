@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="0.0.3" author="mauricio.matos">
+         <preConditions onFail="MARK_RAN">
+         	<tableExists tableName="pessoa" schemaName="public"/>
+         	<tableIsEmpty tableName="pessoa" schemaName="public"/>
+         </preConditions>
+         
+         <insert tableName="pessoa">
+         	<column name="pes_cpf_cnpj" value="123.456.789-00">
+         	</column>
+         	<column name="pes_nome" value="João da Silva">
+         	</column>
+         	<column name="pes_data_nascimento" valueDate="1992-08-29">
+         	</column>
+         </insert>
+         
+         <insert tableName="pessoa">
+         	<column name="pes_cpf_cnpj" value="987.654.321-00">
+         	</column>
+         	<column name="pes_nome" value="Pedro Gonçalves">
+         	</column>
+         	<column name="pes_data_nascimento" valueDate="1991-12-03">
+         	</column>
+         </insert>
+    </changeSet>
+</databaseChangeLog>
